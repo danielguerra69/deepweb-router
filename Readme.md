@@ -11,7 +11,7 @@ firefox to browse the deepweb in a secure way.
 
 # Usage
 
-Download the docker-compose file at my ![github location](https://raw.githubusercontent.com/danielguerra69/deepweb-router/master/examples/docker-compose.yml)
+Download the docker-compose file at my [github location](https://raw.githubusercontent.com/danielguerra69/deepweb-router/master/examples/docker-compose.yml)
 The best way to use this image is with docker-compose.
 
 Standard usage
@@ -30,7 +30,7 @@ XRDP    -> <dockerhost:3389>
 
 # Example
 
-Download the docker-compose file at my ![github location](https://raw.githubusercontent.com/danielguerra69/deepweb-router/master/examples/docker-compose-desktop.yml)
+Download the docker-compose file at my [github location](https://raw.githubusercontent.com/danielguerra69/deepweb-router/master/examples/docker-compose-desktop.yml)
 Example deepweb xrdp desktop
 
 ```bash

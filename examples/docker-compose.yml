@@ -1,0 +1,98 @@
+version: '2'
+
+services:
+
+############### Server side
+
+  ########### Master Server Side
+
+  router:
+    image: danielguerra/deepweb-router
+    command: /bin/router.sh
+    dns: 10.5.0.5
+    cap_add:
+      - NET_ADMIN
+    networks:
+      inside:
+        ipv4_address: 10.5.0.5
+      outside:
+        ipv4_address: 10.6.0.5
+
+  ########### Services Server Side
+
+  # Service tor
+  tor:
+    image: danielguerra/alpine-tor
+    network_mode: "service:router"
+    depends_on:
+     - router
+
+  # Service i2p #
+  i2p:
+    image: danielguerra/alpine-i2pd
+    network_mode: "service:router"
+    depends_on:
+     - router
+
+############### Application side
+
+  ########### Master Client Side
+
+  app:
+    image: danielguerra/deepweb-router
+    command: /bin/app.sh
+    environment:
+    # Needed for routing of the services
+    # Change these according to your docker local network
+      - LOCALNET=10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+    ports:
+      - "8118:8118" # For Privoxy proxy
+      - "2522:22"   # sshd
+    cap_add:
+      - NET_ADMIN
+    dns: 10.5.0.5
+    networks:
+      inside:
+        ipv4_address: 10.5.0.6
+
+  ########### Services Client Side
+
+  # Privoxy
+  privoxy:
+    image: danielguerra/alpine-privoxy
+    network_mode: "service:app"
+    environment: # forwarder proxy settings
+      - SOCKS5IP=10.5.0.5
+      - SOCKS5PORT=9050
+      - I2PIP=10.5.0.5
+      - I2PPORT=4444
+    depends_on:
+     - app
+
+ # Sshd
+  sshd:
+    image: danielguerra/alpine-sshd
+    network_mode: "service:app"
+    depends_on:
+     - app
+
+########### Networks
+networks:
+  # Inside Network for Client Side
+  inside:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+  # Outside Network for Server Side
+  outside:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+     config:
+       - subnet: 10.6.0.0/16
+         gateway: 10.6.0.1

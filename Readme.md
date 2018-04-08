@@ -6,10 +6,12 @@ Based on alpine linux edge.
 The examples contain a deepweb xrdp server with
 firefox to browse the deepweb in a secure way.
 
+![Deepweb Router Schema](https://github.com/danielguerra69/deepweb-router/blob/master/deepweb-router.png)
+
 
 # Usage
 
-Download the docker-compose file at http://
+Download the docker-compose file at my ![github location](https://raw.githubusercontent.com/danielguerra69/deepweb-router/master/examples/docker-compose.yml)
 The best way to use this image is with docker-compose.
 
 Standard usage
@@ -28,7 +30,7 @@ XRDP    -> <dockerhost:3389>
 
 # Example
 
-Download the docker-compose file at http://
+Download the docker-compose file at my ![github location](https://raw.githubusercontent.com/danielguerra69/deepweb-router/master/examples/docker-compose-desktop.yml)
 Example deepweb xrdp desktop
 
 ```bash
@@ -58,5 +60,5 @@ ports:
   - "3389:3389" # For Desktop rdp
   - "8118:8118" # For Privoxy proxy
   - "2522:22"   # sshd
-  - "7777:70"   # mycontainer webserver
+  - "7777:80"   # mycontainer webserver
 ```
